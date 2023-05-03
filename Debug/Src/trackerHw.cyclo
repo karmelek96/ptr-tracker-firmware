@@ -1,0 +1,12 @@
+core_cm0plus.h:741:22:__NVIC_EnableIRQ	2
+core_cm0plus.h:850:22:__NVIC_SetPriority	2
+core_cm0plus.h:899:26:NVIC_EncodePriority	3
+core_cm0plus.h:1056:26:SysTick_Config	2
+trackerHw.c:5:6:SysTick_Handler	1
+trackerHw.c:10:6:HW_DelayMs	3
+trackerHw.c:24:6:HW_trackerHwInit	1
+trackerHw.c:79:6:HW_writeLED	1
+trackerHw.c:83:6:HW_write_LORACS	1
+trackerHw.c:87:6:HW_send_UART	3
+trackerHw.c:95:6:HW_SPI_WriteBuffer	5
+trackerHw.c:109:6:HW_SPI_ReadBuffer	4

@@ -1,0 +1,5 @@
+../Src/lora.c:3:5:RADIO_setupLoRaTX	64	static
+../Src/lora.c:70:5:RADIO_modeLORA	32	static
+../Src/lora.c:88:5:RADIO_init	8	static
+../Src/lora.c:103:10:RADIO_readIrqStatus	16	static
+../Src/lora.c:110:5:RADIO_sendPacketLoRa	48	static

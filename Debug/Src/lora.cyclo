@@ -1,0 +1,5 @@
+lora.c:3:5:RADIO_setupLoRaTX	14
+lora.c:70:5:RADIO_modeLORA	4
+lora.c:88:5:RADIO_init	1
+lora.c:103:10:RADIO_readIrqStatus	1
+lora.c:110:5:RADIO_sendPacketLoRa	7
