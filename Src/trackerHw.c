@@ -27,6 +27,7 @@ void HW_trackerHwInit(void) {
 	RCC->IOPENR 		|= RCC_IOPENR_GPIOBEN; //Enable GPIOB clock
 	RCC->APBENR2		|= RCC_APBENR2_USART1EN; //Enable USART1 clock
 	RCC->APBENR2		|= RCC_APBENR2_SPI1EN; //Enable SPI1 clock
+	RCC->APBENR2		|= RCC_APBENR2_ADCEN; //Enable ADC clock
 
 	GPIOA->MODER		= (GPIOA->MODER & ~(1<<0)) | (1<<0);
 	GPIOA->MODER		= (GPIOA->MODER & ~(1<<1)) | (0<<1); //Setting LED pin as output
@@ -66,6 +67,15 @@ void HW_trackerHwInit(void) {
 	SPI1->CR2			|= SPI_CR2_FRXTH; //Make RXNE get set at 8bit fifo
 	SPI1->CR1			|= SPI_CR1_SPE; //Enable SPI peripheral
 
+	ADC1->CR			|= ADC_CR_ADVREGEN; //Enable ADC voltage regulator
+	HW_DelayMs(2); //Give the regulator a moment to settle before we calibrate
+	ADC1->CR			|= ADC_CR_ADCAL; //Start calibration
+	while((ADC1->CR & ADC_CR_ADCAL) != 0); //Wait until ADCAL is reset by hardware, meaning calibration done
+	ADC1->SMPR			|= (0b111); //Set SMP1 to max
+	ADC->CCR			|= ADC_CCR_TSEN; //Temp sensor enable
+	ADC1->ISR			|= ADC_ISR_ADRDY; //Set ADRDY bit to clear it
+	ADC1->CR			|= ADC_CR_ADEN; //Send enable command
+	while((ADC1->CR & ADC_ISR_ADRDY) != 1); //Wait until ADC is ready
 
 	USART1->BRR			= (CPU_FREQUENCY / 9600); //Set baud
 	USART1->CR1			|= (USART_CR1_RE | USART_CR1_TE | USART_CR1_UE | USART_CR1_RXNEIE_RXFNEIE); //Enable peripheral, receive, transmit, interrupt
@@ -117,3 +127,13 @@ void HW_SPI_ReadBuffer(uint8_t *data, uint32_t size) {
   __enable_irq();
 }
 
+int16_t HW_readADC(uint8_t _ch) {
+    int16_t result;
+
+    while((ADC1->ISR & ADC_ISR_ADRDY) != 1); //Wait until ADC is ready
+    ADC1->CHSELR = (1 << _ch); //Select channel
+    ADC1->CR |= ADC_CR_ADSTART; //Start sampling
+    while((ADC1->ISR & ADC_ISR_EOC) == 0); //Wait for conversion to complete
+    result = ADC1->DR; //Read result from data register
+    return result;
+}

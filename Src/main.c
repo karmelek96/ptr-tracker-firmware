@@ -25,7 +25,15 @@
 volatile char uartReceivedByte = '\0';
 DataPackageRF_t telemetryPacket;
 
+uint8_t vbat;
+
+void read_analogSensors(uint8_t *voltage) {
+	*voltage = (uint32_t)((HW_readADC(3)*1000 / 4095 * 33 * 3) / 1000); //Returns battery voltage * 10
+}
+
 void pack_data() {
+	read_analogSensors(&vbat);
+	telemetryPacket.vbat_10 = vbat;
 	telemetryPacket.packet_id = 0x00AA; //We specify what type of frame we're sending, in this case the big 48 byte struct
 	telemetryPacket.lat = GPS_lat;
 	telemetryPacket.lon = GPS_lon;
@@ -47,7 +55,7 @@ int main(void)
 	RADIO_modeLORA(TRACKER_FREQUENCY_0, TRACKER_TXPOWER_LOW);
 
 	while(1) {
-		if(GPS_sat_count > 2) {
+		if(1==1/*GPS_sat_count > 2*/) {
 			pack_data();
 			send_data_lora(&telemetryPacket);
 			HW_DelayMs(TRACKER_TRANSMISSION_SPACING);
