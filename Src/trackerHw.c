@@ -83,7 +83,7 @@ void HW_trackerHwInit(void) {
 	NVIC_SetPriorityGrouping(0);
 	uint32_t uart_pri_encoding = NVIC_EncodePriority( 0, 1, 0 );
 	NVIC_SetPriority(USART1_IRQn, uart_pri_encoding);
-	//NVIC_EnableIRQ(USART1_IRQn); //Start UART interrupt
+	NVIC_EnableIRQ(USART1_IRQn); //Start UART interrupt
 }
 
 void HW_writeLED(bool _value) {
@@ -128,11 +128,12 @@ void HW_SPI_ReadBuffer(uint8_t *data, uint32_t size) {
 }
 
 int16_t HW_readADC(uint8_t _ch) {
-	int16_t result;
-	while((ADC1->CR & ADC_ISR_ADRDY) != 1); //Wait until ADC is ready
-	ADC1->CHSELR		= (1<<_ch); //Select channel
-	ADC1->CR			|= ADC_CR_ADSTART; //Start sampling
-	while((ADC1->ISR & ADC_ISR_EOC) != 0);
-	result = ADC1->DR;
-	return result;
+    int16_t result;
+
+    while((ADC1->ISR & ADC_ISR_ADRDY) != 1); //Wait until ADC is ready
+    ADC1->CHSELR = (1 << _ch); //Select channel
+    ADC1->CR |= ADC_CR_ADSTART; //Start sampling
+    while((ADC1->ISR & ADC_ISR_EOC) == 0); //Wait for conversion to complete
+    result = ADC1->DR; //Read result from data register
+    return result;
 }
