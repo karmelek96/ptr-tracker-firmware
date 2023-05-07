@@ -37,15 +37,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_macro  0000e4b6  00000000  00000000  00026eb8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0000485a  00000000  00000000  0003536e  2**0
+ 17 .debug_line   0000485c  00000000  00000000  0003536e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000499d3  00000000  00000000  00039bc8  2**0
+ 18 .debug_str    000499d3  00000000  00000000  00039bca  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000050  00000000  00000000  0008359b  2**0
+ 19 .comment      00000050  00000000  00000000  0008359d  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00001edc  00000000  00000000  000835ec  2**2
+ 20 .debug_frame  00001edc  00000000  00000000  000835f0  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_loc    000002d4  00000000  00000000  000854c8  2**0
+ 21 .debug_loc    000002d4  00000000  00000000  000854cc  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -4749,11 +4749,11 @@ __STATIC_FORCEINLINE void __disable_irq(void)
 }
  80023e2:	46c0      	nop			; (mov r8, r8)
     __disable_irq();
-	GPS_sendCmd(PMTK_SET_GPGGA);
+    GPS_sendCmd(PMTK_RESET);
  80023e4:	4b15      	ldr	r3, [pc, #84]	; (800243c <main+0x78>)
  80023e6:	0018      	movs	r0, r3
  80023e8:	f7ff fcda 	bl	8001da0 <GPS_sendCmd>
-	GPS_sendCmd(PMTK_RESET);
+	GPS_sendCmd(PMTK_SET_GPGGA);
  80023ec:	4b14      	ldr	r3, [pc, #80]	; (8002440 <main+0x7c>)
  80023ee:	0018      	movs	r0, r3
  80023f0:	f7ff fcd6 	bl	8001da0 <GPS_sendCmd>
@@ -4804,7 +4804,7 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  8002434:	2000012c 	.word	0x2000012c
  8002438:	19d772b0 	.word	0x19d772b0
  800243c:	08004ad8 	.word	0x08004ad8
- 8002440:	08004b08 	.word	0x08004b08
+ 8002440:	08004ae0 	.word	0x08004ae0
  8002444:	20000094 	.word	0x20000094
  8002448:	20000130 	.word	0x20000130
 

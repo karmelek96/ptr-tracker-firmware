@@ -1431,7 +1431,8 @@ LOAD c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
  *(.rodata)
  .rodata        0x0000000008004ac8        0xf ./Src/gps.o
  *fill*         0x0000000008004ad7        0x1 
- .rodata        0x0000000008004ad8       0x38 ./Src/main.o
+ .rodata        0x0000000008004ad8       0x36 ./Src/main.o
+ *fill*         0x0000000008004b0e        0x2 
  .rodata        0x0000000008004b10        0x7 ./Src/sx126x.o
  *fill*         0x0000000008004b17        0x1 
  .rodata        0x0000000008004b18       0x40 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp\libgcc.a(divdf3.o)
@@ -1908,16 +1909,16 @@ LOAD c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_macro   0x000000000000d981       0xd5 ./Src/trackerHw.o
  .debug_macro   0x000000000000da56      0xa60 ./Src/trackerHw.o
 
-.debug_line     0x0000000000000000     0x485a
+.debug_line     0x0000000000000000     0x485c
  .debug_line    0x0000000000000000      0x645 ./Src/gps.o
  .debug_line    0x0000000000000645      0x62a ./Src/lora.o
- .debug_line    0x0000000000000c6f      0x64d ./Src/main.o
- .debug_line    0x00000000000012bc     0x15bf ./Src/sx126x.o
- .debug_line    0x000000000000287b      0x6ca ./Src/sx126x_hal.o
- .debug_line    0x0000000000002f45      0x7f9 ./Src/syscalls.o
- .debug_line    0x000000000000373e      0x4ef ./Src/sysmem.o
- .debug_line    0x0000000000003c2d      0xba9 ./Src/trackerHw.o
- .debug_line    0x00000000000047d6       0x84 ./Startup/startup_stm32g030f6px.o
+ .debug_line    0x0000000000000c6f      0x64f ./Src/main.o
+ .debug_line    0x00000000000012be     0x15bf ./Src/sx126x.o
+ .debug_line    0x000000000000287d      0x6ca ./Src/sx126x_hal.o
+ .debug_line    0x0000000000002f47      0x7f9 ./Src/syscalls.o
+ .debug_line    0x0000000000003740      0x4ef ./Src/sysmem.o
+ .debug_line    0x0000000000003c2f      0xba9 ./Src/trackerHw.o
+ .debug_line    0x00000000000047d8       0x84 ./Startup/startup_stm32g030f6px.o
 
 .debug_str      0x0000000000000000    0x499d3
  .debug_str     0x0000000000000000     0x3e88 ./Src/gps.o

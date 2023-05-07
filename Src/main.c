@@ -74,8 +74,8 @@ int main(void)
 	RADIO_init();
 	RADIO_modeLORA(TRACKER_FREQUENCY_0, TRACKER_TXPOWER_LOW);
     __disable_irq();
+    GPS_sendCmd(PMTK_RESET);
 	GPS_sendCmd(PMTK_SET_GPGGA);
-	GPS_sendCmd(PMTK_RESET);
 	__enable_irq();
 
 	state = WAIT_FOR_FIX;
