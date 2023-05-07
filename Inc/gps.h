@@ -7,6 +7,7 @@
 
 #define NMEA_MAX_SENTENCE_LENGTH 82
 #define PMTK_SET_GPGGA "PMTK314,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
+#define PMTK_SET_FAST_UPDATE "PMTK220,100"
 #define PMTK_RESET "PMTK104"
 
 extern int32_t GPS_lat;

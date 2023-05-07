@@ -76,8 +76,8 @@ int main(void)
     __disable_irq();
     GPS_sendCmd(PMTK_RESET);
 	GPS_sendCmd(PMTK_SET_GPGGA);
+	GPS_sendCmd(PMTK_SET_FAST_UPDATE);
 	__enable_irq();
-
 	state = WAIT_FOR_FIX;
 	int i;
 	while(GPS_sat_count < 5) {

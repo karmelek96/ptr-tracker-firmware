@@ -99,7 +99,12 @@ uint16_t GPS_crc_calc(char *message)
 	return crc;
 }
 
+//void GPS_sendCmd(char *message) {
+//	sprintf(txMessageBuffer, "$%s*%02X\r\n", message, GPS_crc_calc(message));
+//	HW_send_UART(message, sizeof(message));
+//}
+
 void GPS_sendCmd(char *message) {
-	sprintf(txMessageBuffer, "$%s*%02X\r\n", message, GPS_crc_calc(message));
-	HW_send_UART(message, sizeof(message));
+  sprintf(txMessageBuffer, "$%s*%02X\r\n", message, GPS_crc_calc(message));
+  HW_send_UART(txMessageBuffer, sizeof(txMessageBuffer));
 }
