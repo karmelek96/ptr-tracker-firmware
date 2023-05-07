@@ -59,8 +59,8 @@ all: main-build
 main-build: ptr_tracker_C.elf secondary-outputs
 
 # Tool invocations
-ptr_tracker_C.elf ptr_tracker_C.map: $(OBJS) $(USER_OBJS) C:\Users\Stanley\Documents\ptr_tracker_C\STM32G030F6PX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "ptr_tracker_C.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\Stanley\Documents\ptr_tracker_C\STM32G030F6PX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ptr_tracker_C.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+ptr_tracker_C.elf ptr_tracker_C.map: $(OBJS) $(USER_OBJS) C:\Users\Stanley\Documents\ptr-tracker-firmware\STM32G030F6PX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "ptr_tracker_C.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\Stanley\Documents\ptr-tracker-firmware\STM32G030F6PX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ptr_tracker_C.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
