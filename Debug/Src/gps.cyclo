@@ -1,6 +1,7 @@
-gps.c:14:10:GPS_parse_lat	1
-gps.c:21:10:GPS_parse_lon	1
-gps.c:29:9:GPS_parse_sign	3
-gps.c:37:6:GPS_parse	19
-gps.c:86:6:GPS_getStatus	1
-gps.c:90:10:GPS_crc_calc	2
+gps.c:15:10:GPS_parse_lat	1
+gps.c:22:10:GPS_parse_lon	1
+gps.c:30:9:GPS_parse_sign	3
+gps.c:38:6:GPS_parse	19
+gps.c:87:6:GPS_getStatus	1
+gps.c:91:10:GPS_crc_calc	2
+gps.c:102:6:GPS_sendCmd	1
