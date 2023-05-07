@@ -53,7 +53,8 @@ int main(void)
 	HW_trackerHwInit();
 	RADIO_init();
 	RADIO_modeLORA(TRACKER_FREQUENCY_0, TRACKER_TXPOWER_LOW);
-
+	GPS_sendCmd(PMTK_RESET);
+	GPS_sendCmd(PMTK_SET_GPGGA);
 	while(1) {
 		if(1==1/*GPS_sat_count > 2*/) {
 			pack_data();

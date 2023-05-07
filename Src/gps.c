@@ -10,6 +10,7 @@ uint8_t GPS_fix = 0;
 char GPS_sentence[NMEA_MAX_SENTENCE_LENGTH];
 uint8_t GPS_msg_id = 0;
 bool GPS_msg_started = 0;
+char txMessageBuffer[64];
 
 uint32_t GPS_parse_lat(char *input) {
     int degrees = (input[0] - '0') * 10 + (input[1] - '0');
@@ -96,4 +97,9 @@ uint16_t GPS_crc_calc(char *message)
 		 crc ^= message[i];
 	}
 	return crc;
+}
+
+void GPS_sendCmd(char *message) {
+	sprintf(txMessageBuffer, "$%s*%02X\r\n", message, GPS_crc_calc(message));
+	HW_send_UART(message, sizeof(message));
 }
