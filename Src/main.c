@@ -53,10 +53,12 @@ int main(void)
 	HW_trackerHwInit();
 	RADIO_init();
 	RADIO_modeLORA(TRACKER_FREQUENCY_0, TRACKER_TXPOWER_LOW);
+	__disable_irq();
 	GPS_sendCmd(PMTK_RESET);
 	GPS_sendCmd(PMTK_SET_GPGGA);
+	__enable_irq();
 	while(1) {
-		if(1==1/*GPS_sat_count > 2*/) {
+		if(GPS_sat_count > 2) {
 			pack_data();
 			send_data_lora(&telemetryPacket);
 			HW_DelayMs(TRACKER_TRANSMISSION_SPACING);

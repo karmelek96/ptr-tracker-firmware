@@ -1,5 +1,5 @@
 main.c:30:6:read_analogSensors	1
 main.c:34:6:pack_data	1
 main.c:44:6:send_data_lora	1
-main.c:51:5:main	1
-main.c:67:6:USART1_IRQHandler	2
+main.c:51:5:main	2
+main.c:69:6:USART1_IRQHandler	2
