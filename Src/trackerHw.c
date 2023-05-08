@@ -28,6 +28,7 @@ void HW_trackerHwInit(void) {
 	RCC->APBENR2		|= RCC_APBENR2_USART1EN; //Enable USART1 clock
 	RCC->APBENR2		|= RCC_APBENR2_SPI1EN; //Enable SPI1 clock
 	RCC->APBENR2		|= RCC_APBENR2_ADCEN; //Enable ADC clock
+	RCC->APBENR1		|= RCC_APBENR1_TIM3EN; //Enable TIM3 clock
 
 	GPIOA->MODER		= (GPIOA->MODER & ~(1<<0)) | (1<<0);
 	GPIOA->MODER		= (GPIOA->MODER & ~(1<<1)) | (0<<1); //Setting LED pin as output
@@ -76,6 +77,9 @@ void HW_trackerHwInit(void) {
 	ADC1->ISR			|= ADC_ISR_ADRDY; //Set ADRDY bit to clear it
 	ADC1->CR			|= ADC_CR_ADEN; //Send enable command
 	while((ADC1->CR & ADC_ISR_ADRDY) != 1); //Wait until ADC is ready
+
+	TIM3->PSC			= (CPU_FREQUENCY / 1000); //16000 prescaler, giving us a millisecond timer
+	HW_StartTimer3();
 
 	USART1->BRR			= (CPU_FREQUENCY / 9600); //Set baud
 	USART1->CR1			|= (USART_CR1_RE | USART_CR1_TE | USART_CR1_UE | USART_CR1_RXNEIE_RXFNEIE); //Enable peripheral, receive, transmit, interrupt
@@ -136,4 +140,16 @@ int16_t HW_readADC(uint8_t _ch) {
     while((ADC1->ISR & ADC_ISR_EOC) == 0); //Wait for conversion to complete
     result = ADC1->DR; //Read result from data register
     return result;
+}
+
+void HW_StartTimer3() {
+	TIM3->CR1			|= TIM_CR1_CEN; //Enable timer
+}
+
+void HW_StopTimer3() {
+	TIM3->CR1			|= TIM_CR1_CEN; //Enable timer
+}
+
+uint32_t HW_getTimer3() {
+	return TIM3->CNT;
 }
