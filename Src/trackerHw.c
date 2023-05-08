@@ -79,7 +79,6 @@ void HW_trackerHwInit(void) {
 	while((ADC1->CR & ADC_ISR_ADRDY) != 1); //Wait until ADC is ready
 
 	TIM3->PSC			= (CPU_FREQUENCY / 1000); //16000 prescaler, giving us a millisecond timer
-	HW_StartTimer3();
 
 	USART1->BRR			= (CPU_FREQUENCY / 9600); //Set baud
 	USART1->CR1			|= (USART_CR1_RE | USART_CR1_TE | USART_CR1_UE | USART_CR1_RXNEIE_RXFNEIE); //Enable peripheral, receive, transmit, interrupt
@@ -147,9 +146,13 @@ void HW_StartTimer3() {
 }
 
 void HW_StopTimer3() {
-	TIM3->CR1			|= TIM_CR1_CEN; //Enable timer
+	TIM3->CR1 &= ~TIM_CR1_CEN; // Disable timer
 }
 
 uint32_t HW_getTimer3() {
 	return TIM3->CNT;
+}
+
+void HW_resetTimer3() {
+	TIM3->CNT = 0;
 }

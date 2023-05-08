@@ -84,10 +84,14 @@ int main(void)
 		blink_GPS_startup();
 	}
 	state = OPERATION;
+	HW_StartTimer3();
 	while(state = OPERATION) {
 		pack_data();
 		send_data_lora(&telemetryPacket);
-		HW_DelayMs(TRACKER_TRANSMISSION_SPACING);
+		while(HW_getTimer3() < TRACKER_TRANSMISSION_SPACING) {
+			//Here we wait until the transmission spacing has passed
+		}
+		HW_resetTimer3();
 	}
 }
 
