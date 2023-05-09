@@ -33,6 +33,10 @@ void HW_trackerHwInit(void) {
 	GPIOA->MODER		= (GPIOA->MODER & ~(1<<0)) | (1<<0);
 	GPIOA->MODER		= (GPIOA->MODER & ~(1<<1)) | (0<<1); //Setting LED pin as output
 
+	//Setting the following bits breaks LORA
+	//GPIOA->MODER		= (GPIOA->MODER & ~(1<<2)) | (0<<2);
+	//GPIOA->MODER		= (GPIOA->MODER & ~(1<<3)) | (1<<3); //Pin 1 as input (DIO1)
+
 	GPIOA->MODER		= (GPIOA->MODER & ~(1<<10)) | (0<<10);
 	GPIOA->MODER		= (GPIOA->MODER & ~(1<<11)) | (1<<11); //Setting pin 5 as alternate function
 	GPIOA->OSPEEDR		= (GPIOA->OSPEEDR & ~(1<<10)) | (1<<10);
