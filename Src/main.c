@@ -84,10 +84,22 @@ int main(void)
 		blink_GPS_startup();
 	}
 	state = OPERATION;
+	HW_StartTimer3();
 	while(state = OPERATION) {
 		pack_data();
 		send_data_lora(&telemetryPacket);
-		HW_DelayMs(TRACKER_TRANSMISSION_SPACING);
+		while(HW_getTimer3() < TRACKER_TRANSMISSION_SPACING) {
+			//We wait
+		}
+		RADIO_setRx();
+		HW_DelayMs(5);
+		HW_resetTimer3();
+		while(HW_getTimer3() < 5000) { //If the interference doesnt stop after 5s, transmit anyway
+			if(RADIO_get_rssi(0) < -90) {
+				break;
+			}
+		}
+		HW_resetTimer3();
 	}
 }
 

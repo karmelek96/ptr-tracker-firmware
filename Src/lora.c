@@ -145,3 +145,23 @@ int RADIO_sendPacketLoRa(uint8_t *txbuffer, uint16_t size, uint32_t txtimeout) {
 
 	return 0;
 }
+
+int RADIO_setRx() {
+	sx126x_set_rx(0, 0);
+	return 0;
+}
+
+int16_t RADIO_get_rssi(const void* context) {
+    sx126x_status_t status = SX126X_STATUS_ERROR;
+    int16_t rssi_in_dbm = 0;
+
+    while (1) {
+        status = sx126x_get_rssi_inst(context, &rssi_in_dbm);
+        if (status == SX126X_STATUS_OK) {
+            return rssi_in_dbm;
+        }
+    }
+    HW_DelayMs(5);
+}
+
+
