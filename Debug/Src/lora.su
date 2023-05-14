@@ -2,6 +2,12 @@
 ../Src/lora.c:70:5:RADIO_modeLORA	48	static
 ../Src/lora.c:88:5:RADIO_init	8	static
 ../Src/lora.c:103:10:RADIO_readIrqStatus	16	static
-../Src/lora.c:110:5:RADIO_sendPacketLoRa	48	static
-../Src/lora.c:149:5:RADIO_setRx	8	static
-../Src/lora.c:154:9:RADIO_get_rssi	40	static
+../Src/lora.c:110:5:RADIO_clearIrqStatus	8	static
+../Src/lora.c:114:5:RADIO_sendPacketLoRa	48	static
+../Src/lora.c:153:5:RADIO_setRx	16	static
+../Src/lora.c:160:5:RADIO_setRxContinuous	8	static
+../Src/lora.c:167:5:RADIO_setStandby	8	static
+../Src/lora.c:172:9:RADIO_get_rssi	40	static
+../Src/lora.c:185:5:RADIO_getCRC	8	static
+../Src/lora.c:189:9:RADIO_getRxPayloadSize	16	static
+../Src/lora.c:195:6:RADIO_getRxPayload	32	static

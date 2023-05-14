@@ -107,6 +107,10 @@ uint16_t RADIO_readIrqStatus(){
 	return res;
 }
 
+int RADIO_clearIrqStatus() {
+	return sx126x_clear_irq_status(0, SX126X_IRQ_RX_DONE);
+}
+
 int RADIO_sendPacketLoRa(uint8_t *txbuffer, uint16_t size, uint32_t txtimeout) {
 	if ((size == 0) || (size > 256)) {
 		return 1;
@@ -147,7 +151,19 @@ int RADIO_sendPacketLoRa(uint8_t *txbuffer, uint16_t size, uint32_t txtimeout) {
 }
 
 int RADIO_setRx() {
+	sx126x_set_dio_irq_params(0, 0x2, 0x2, 0, 0); //This makes DIO1 go high when rx is done
+	sx126x_set_rx_duty_cycle(0, 10, 10); //Listen for 10ms, sleep for 10ms
 	sx126x_set_rx(0, 0);
+	return 0;
+}
+
+int RADIO_setRxContinuous() { //This mode uses more power and causes significant heating of the chip
+	sx126x_set_rx(0, 0);
+	return 0;
+}
+
+int RADIO_setStandby() {
+	sx126x_set_standby(0, SX126X_STANDBY_CFG_RC);
 	return 0;
 }
 
@@ -164,4 +180,18 @@ int16_t RADIO_get_rssi(const void* context) {
     HW_DelayMs(5);
 }
 
+int RADIO_getCRC() {
+	return (RADIO_readIrqStatus() & SX126X_IRQ_CRC_ERROR);
+}
 
+uint8_t RADIO_getRxPayloadSize() {
+	sx126x_rx_buffer_status_t sx126x_rx_buffer_status_d;
+	sx126x_get_rx_buffer_status(0, &sx126x_rx_buffer_status_d);
+	return sx126x_rx_buffer_status_d.pld_len_in_bytes;
+}
+
+void RADIO_getRxPayload(uint8_t *buffer) {
+	sx126x_rx_buffer_status_t sx126x_rx_buffer_status_d;
+	sx126x_get_rx_buffer_status(0, &sx126x_rx_buffer_status_d);
+	sx126x_read_buffer(0, sx126x_rx_buffer_status_d.buffer_start_pointer, buffer, sx126x_rx_buffer_status_d.pld_len_in_bytes);
+}

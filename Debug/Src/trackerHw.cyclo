@@ -11,3 +11,4 @@ trackerHw.c:148:6:HW_StartTimer3	1
 trackerHw.c:152:6:HW_StopTimer3	1
 trackerHw.c:156:10:HW_getTimer3	1
 trackerHw.c:160:6:HW_resetTimer3	1
+trackerHw.c:164:9:HW_readDIO1	1

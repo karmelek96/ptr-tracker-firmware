@@ -11,3 +11,4 @@
 ../Src/trackerHw.c:152:6:HW_StopTimer3	0	static
 ../Src/trackerHw.c:156:10:HW_getTimer3	0	static
 ../Src/trackerHw.c:160:6:HW_resetTimer3	0	static
+../Src/trackerHw.c:164:9:HW_readDIO1	0	static
