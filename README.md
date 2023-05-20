@@ -9,6 +9,7 @@
 ```docker build -t tracker_compiler .```
 
 5. Build the firmware:
+
 ```docker run --rm -it -v $(pwd):/usr/local/src/tracker_firmware tracker_compiler```
 
 6. The firmware will be in the `build` directory
