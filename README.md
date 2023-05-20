@@ -2,7 +2,7 @@
 
 ## Building the firmware
 # Building using Docker
-1. Install [docker](https://www.docker.com)
+1. Install [Docker](https://www.docker.com)
 2. Clone the repository
 3. Set the working directory to the repository root
 4. Build the Docker image:
