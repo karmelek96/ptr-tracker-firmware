@@ -1,4 +1,0 @@
-../Src/sx126x_hal.c:2:21:sx126x_hal_write	32	dynamic
-../Src/sx126x_hal.c:12:21:sx126x_hal_read	24	dynamic
-../Src/sx126x_hal.c:22:21:sx126x_hal_reset	0	static
-../Src/sx126x_hal.c:26:21:sx126x_hal_wakeup	8	static
