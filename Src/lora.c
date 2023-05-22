@@ -41,6 +41,7 @@ int RADIO_setupLoRaTX(uint32_t frequency, int32_t offset, uint8_t modParam1,
 	sx126x_mod_params_lora_d.cr   = modParam3;
 	sx126x_mod_params_lora_d.ldro = modParam4;
 	sx126x_mod_params_lora_d.sf   = modParam1;
+
 	if(status == SX126X_STATUS_OK)
 			status = sx126x_set_lora_mod_params(0, &sx126x_mod_params_lora_d);
 	if(status == SX126X_STATUS_OK)

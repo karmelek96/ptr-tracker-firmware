@@ -69,8 +69,8 @@ void listenForPackets() {
 				}
 			}
 		}
-		RADIO_clearIrqStatus();
 	}
+	RADIO_clearIrqStatus();
 }
 
 int main(void)
