@@ -31,7 +31,7 @@ void pack_data() {
 
 void send_data_lora(uint8_t* data) {
 	HW_writeLED(1);
-	RADIO_sendPacketLoRa(data, sizeof(DataPackageRF_t), 500);
+	RADIO_sendPacketLoRa(data, sizeof(DataPackageRF_t), 0);
 	HW_writeLED(0);
 }
 
@@ -94,19 +94,16 @@ int main(void)
 	while(state = OPERATION) {
 		pack_data();
 		send_data_lora(&selfTelemetryPacket);
-		HW_DelayMs(200); //This is very important. Idk why but below 200 the sx1262 stops working completely
+		RADIO_clearIrqStatus();
 		RADIO_setRx();
 		HW_DelayMs(5);
 		while(HW_getTimer3() < TRACKER_TRANSMISSION_SPACING) {
-			//Wait
-			HW_DelayMs(10);
+			listenForPackets();
 		}
-		RADIO_setStandby();
-		HW_DelayMs(5);
-		RADIO_setRxContinuous();
-		HW_DelayMs(5);
 		HW_resetTimer3();
-		while(HW_getTimer3() < 5000) { //If the interference doesnt stop after 5s, transmit anyway
+		while(HW_getTimer3() < 5000) { //If the interference doesn't stop after 5s, transmit anyway
+			RADIO_setRxSingle();
+			HW_DelayMs(5);
 			if(RADIO_get_rssi(0) < -90) {
 				break;
 			}

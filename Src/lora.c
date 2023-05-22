@@ -44,7 +44,9 @@ int RADIO_setupLoRaTX(uint32_t frequency, int32_t offset, uint8_t modParam1,
 	if(status == SX126X_STATUS_OK)
 			status = sx126x_set_lora_mod_params(0, &sx126x_mod_params_lora_d);
 	if(status == SX126X_STATUS_OK)
-			status = sx126x_set_buffer_base_address(0, 0, 0);
+			status = sx126x_set_buffer_base_address(0, 0, 100);
+
+	sx126x_set_dio_irq_params(0, SX126X_IRQ_RX_DONE, SX126X_IRQ_RX_DONE, 0, 0); //This makes DIO1 go high when rx is done
 
 	sx126x_pkt_params_lora_t sx126x_pkt_params_lora_d;
 	sx126x_pkt_params_lora_d.crc_is_on 				= true;
@@ -108,7 +110,7 @@ uint16_t RADIO_readIrqStatus(){
 }
 
 int RADIO_clearIrqStatus() {
-	return sx126x_clear_irq_status(0, SX126X_IRQ_RX_DONE);
+	return sx126x_clear_irq_status(0, 0b1111111111);
 }
 
 int RADIO_sendPacketLoRa(uint8_t *txbuffer, uint16_t size, uint32_t txtimeout) {
@@ -117,8 +119,6 @@ int RADIO_sendPacketLoRa(uint8_t *txbuffer, uint16_t size, uint32_t txtimeout) {
 	}
 
 	sx126x_set_standby(0, SX126X_STANDBY_CFG_RC);
-
-	sx126x_set_buffer_base_address(0, 0, 0);
 
 	sx126x_write_buffer(0, 0, txbuffer,	size);
 
@@ -150,14 +150,12 @@ int RADIO_sendPacketLoRa(uint8_t *txbuffer, uint16_t size, uint32_t txtimeout) {
 	return 0;
 }
 
-int RADIO_setRx() {
-	sx126x_set_dio_irq_params(0, 0x2, 0x2, 0, 0); //This makes DIO1 go high when rx is done
-	sx126x_set_rx_duty_cycle(0, 10, 10); //Listen for 10ms, sleep for 10ms
-	sx126x_set_rx(0, 0);
+int RADIO_setRx() { //Used for packet relay
+	sx126x_set_rx(0, 0xffffff);
 	return 0;
 }
 
-int RADIO_setRxContinuous() { //This mode uses more power and causes significant heating of the chip
+int RADIO_setRxSingle() { //This mode uses more power and causes significant heating of the chip. Used only for RSSI
 	sx126x_set_rx(0, 0);
 	return 0;
 }
@@ -182,6 +180,10 @@ int16_t RADIO_get_rssi(const void* context) {
 
 int RADIO_getCRC() {
 	return (RADIO_readIrqStatus() & SX126X_IRQ_CRC_ERROR);
+}
+
+int RADIO_getRxDone() {
+	return (RADIO_readIrqStatus() & SX126X_IRQ_RX_DONE);
 }
 
 uint8_t RADIO_getRxPayloadSize() {

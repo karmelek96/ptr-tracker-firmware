@@ -162,5 +162,10 @@ void HW_resetTimer3() {
 }
 
 uint8_t HW_readDIO1() {
-	return GPIOA->IDR & 0x2;
+	if((GPIOA->IDR & 0x2) == 0x2) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
 }
