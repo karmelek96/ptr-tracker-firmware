@@ -31,7 +31,7 @@ void pack_data() {
 
 void send_data_lora(uint8_t* data) {
 	HW_writeLED(1);
-	RADIO_sendPacketLoRa(data, sizeof(DataPackageRF_t), 0);
+	RADIO_sendPacketLoRa(data, sizeof(DataPackageRF_t), 500);
 	HW_writeLED(0);
 }
 
@@ -60,7 +60,7 @@ void fillRelayBuffer(DataPackageRF_t newData, DataPackageRF_t* buffer) {
 }
 
 void listenForPackets() {
-	if(HW_readDIO1() == 1) { //We received something
+	if((RADIO_readIrqStatus() & 0x2) == 0x2) {
 		if(RADIO_getCRC() == 0) {
 			if(RADIO_getRxPayloadSize() == sizeof(selfTelemetryPacket)) {
 				RADIO_getRxPayload(&receivedPacket);
@@ -69,8 +69,9 @@ void listenForPackets() {
 				}
 			}
 		}
+		RADIO_setBufferBaseAddress(0, 100);
+		RADIO_clearIrqStatus();
 	}
-	RADIO_clearIrqStatus();
 }
 
 int main(void)
@@ -91,11 +92,12 @@ int main(void)
 	}
 	state = OPERATION;
 	HW_StartTimer3();
-	while(state = OPERATION) {
+	while(state == OPERATION) {
 		pack_data();
 		send_data_lora(&selfTelemetryPacket);
 		RADIO_clearIrqStatus();
-		RADIO_setRx();
+		HW_DelayMs(5);
+		RADIO_setRxSingleDutyCycle();
 		HW_DelayMs(5);
 		while(HW_getTimer3() < TRACKER_TRANSMISSION_SPACING) {
 			listenForPackets();

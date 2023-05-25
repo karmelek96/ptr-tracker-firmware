@@ -151,13 +151,18 @@ int RADIO_sendPacketLoRa(uint8_t *txbuffer, uint16_t size, uint32_t txtimeout) {
 	return 0;
 }
 
-int RADIO_setRx() { //Used for packet relay
-	sx126x_set_rx(0, 0xffffff);
+int RADIO_setRxSingle() { //This mode uses more power and causes significant heating of the chip. Used only for RSSI
+	sx126x_set_standby(0, SX126X_STANDBY_CFG_RC);
+	HW_DelayMs(5);
+	sx126x_set_rx(0, 0);
 	return 0;
 }
 
-int RADIO_setRxSingle() { //This mode uses more power and causes significant heating of the chip. Used only for RSSI
-	sx126x_set_rx(0, 0);
+int RADIO_setRxSingleDutyCycle() {
+	sx126x_set_standby(0, SX126X_STANDBY_CFG_RC);
+	HW_DelayMs(5);
+	//sx126x_set_rx_duty_cycle(0, 20, 100);
+	sx126x_set_rx(0, 1000);
 	return 0;
 }
 
@@ -197,4 +202,8 @@ void RADIO_getRxPayload(uint8_t *buffer) {
 	sx126x_rx_buffer_status_t sx126x_rx_buffer_status_d;
 	sx126x_get_rx_buffer_status(0, &sx126x_rx_buffer_status_d);
 	sx126x_read_buffer(0, sx126x_rx_buffer_status_d.buffer_start_pointer, buffer, sx126x_rx_buffer_status_d.pld_len_in_bytes);
+}
+
+int RADIO_setBufferBaseAddress(uint8_t tx, uint8_t rx) {
+	return sx126x_set_buffer_base_address(0, tx, rx);
 }
