@@ -158,14 +158,6 @@ int RADIO_setRxSingle() { //This mode uses more power and causes significant hea
 	return 0;
 }
 
-int RADIO_setRxSingleDutyCycle() {
-	sx126x_set_standby(0, SX126X_STANDBY_CFG_RC);
-	HW_DelayMs(5);
-	//sx126x_set_rx_duty_cycle(0, 20, 100);
-	sx126x_set_rx(0, 1000);
-	return 0;
-}
-
 int RADIO_setStandby() {
 	sx126x_set_standby(0, SX126X_STANDBY_CFG_RC);
 	return 0;
@@ -206,4 +198,10 @@ void RADIO_getRxPayload(uint8_t *buffer) {
 
 int RADIO_setBufferBaseAddress(uint8_t tx, uint8_t rx) {
 	return sx126x_set_buffer_base_address(0, tx, rx);
+}
+
+uint8_t RADIO_getRandInt(int n) {
+	uint32_t result;
+	sx126x_get_random_numbers(0, &result, n);
+	return (int)result;
 }

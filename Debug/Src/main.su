@@ -1,8 +1,0 @@
-../Src/main.c:17:6:read_analogSensors	16	static
-../Src/main.c:21:6:pack_data	16	static
-../Src/main.c:32:6:send_data_lora	16	static
-../Src/main.c:38:6:blink_GPS_startup	16	static
-../Src/main.c:52:6:fillRelayBuffer	24	static
-../Src/main.c:62:6:listenForPackets	56	static
-../Src/main.c:76:5:main	8	static,ignoring_inline_asm
-../Src/main.c:118:6:USART1_IRQHandler	8	static
