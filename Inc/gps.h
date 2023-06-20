@@ -22,4 +22,12 @@ extern uint8_t GPS_msg_id;
 extern bool GPS_msg_started;
 extern char GPS_txMessageBuffer[64];
 
+uint32_t GPS_parse_lat(char *input);
+uint32_t GPS_parse_lon(char *input);
+int32_t GPS_parse_sign(char *input, uint32_t latlon);
+bool GPS_parse(char c);
+bool GPS_getStatus();
+uint16_t GPS_crc_calc(char *message);
+void GPS_sendCmd(char *message);
+
 #endif

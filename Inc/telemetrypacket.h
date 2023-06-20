@@ -1,6 +1,8 @@
 #ifndef __TELEMETRYPACKET_H__
 #define __TELEMETRYPACKET_H__
 
+#include <stdint.h>
+
 
 typedef struct __attribute__((__packed__)){
 	uint16_t packet_id;

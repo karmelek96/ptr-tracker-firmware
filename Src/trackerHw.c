@@ -34,8 +34,8 @@ void HW_trackerHwInit(void) {
 	GPIOA->MODER		= (GPIOA->MODER & ~(1<<1)) | (0<<1); //Setting LED pin as output
 
 	//Setting the following bits breaks LORA
-	//GPIOA->MODER		= (GPIOA->MODER & ~(1<<2)) | (0<<2);
-	//GPIOA->MODER		= (GPIOA->MODER & ~(1<<3)) | (1<<3); //Pin 1 as input (DIO1)
+	GPIOA->MODER		= (GPIOA->MODER & ~(1<<2)) | (0<<2);
+	GPIOA->MODER		= (GPIOA->MODER & ~(1<<3)) | (0<<3); //Pin 1 as input (DIO1)
 
 	GPIOA->MODER		= (GPIOA->MODER & ~(1<<10)) | (0<<10);
 	GPIOA->MODER		= (GPIOA->MODER & ~(1<<11)) | (1<<11); //Setting pin 5 as alternate function
@@ -159,4 +159,13 @@ uint32_t HW_getTimer3() {
 
 void HW_resetTimer3() {
 	TIM3->CNT = 0;
+}
+
+uint8_t HW_readDIO1() {
+	if((GPIOA->IDR & 0x2) == 0x2) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
 }

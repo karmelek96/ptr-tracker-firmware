@@ -41,10 +41,13 @@ int RADIO_setupLoRaTX(uint32_t frequency, int32_t offset, uint8_t modParam1,
 	sx126x_mod_params_lora_d.cr   = modParam3;
 	sx126x_mod_params_lora_d.ldro = modParam4;
 	sx126x_mod_params_lora_d.sf   = modParam1;
+
 	if(status == SX126X_STATUS_OK)
 			status = sx126x_set_lora_mod_params(0, &sx126x_mod_params_lora_d);
 	if(status == SX126X_STATUS_OK)
-			status = sx126x_set_buffer_base_address(0, 0, 0);
+			status = sx126x_set_buffer_base_address(0, 0, 100);
+
+	sx126x_set_dio_irq_params(0, SX126X_IRQ_RX_DONE, SX126X_IRQ_RX_DONE, 0, 0); //This makes DIO1 go high when rx is done
 
 	sx126x_pkt_params_lora_t sx126x_pkt_params_lora_d;
 	sx126x_pkt_params_lora_d.crc_is_on 				= true;
@@ -107,14 +110,16 @@ uint16_t RADIO_readIrqStatus(){
 	return res;
 }
 
+int RADIO_clearIrqStatus() {
+	return sx126x_clear_irq_status(0, 0b1111111111);
+}
+
 int RADIO_sendPacketLoRa(uint8_t *txbuffer, uint16_t size, uint32_t txtimeout) {
 	if ((size == 0) || (size > 256)) {
 		return 1;
 	}
 
 	sx126x_set_standby(0, SX126X_STANDBY_CFG_RC);
-
-	sx126x_set_buffer_base_address(0, 0, 0);
 
 	sx126x_write_buffer(0, 0, txbuffer,	size);
 
@@ -146,8 +151,15 @@ int RADIO_sendPacketLoRa(uint8_t *txbuffer, uint16_t size, uint32_t txtimeout) {
 	return 0;
 }
 
-int RADIO_setRx() {
+int RADIO_setRxSingle() {
+	sx126x_set_standby(0, SX126X_STANDBY_CFG_RC);
+	HW_DelayMs(5);
 	sx126x_set_rx(0, 0);
+	return 0;
+}
+
+int RADIO_setStandby() {
+	sx126x_set_standby(0, SX126X_STANDBY_CFG_RC);
 	return 0;
 }
 
@@ -164,4 +176,32 @@ int16_t RADIO_get_rssi(const void* context) {
     HW_DelayMs(5);
 }
 
+int RADIO_getCRC() {
+	return (RADIO_readIrqStatus() & SX126X_IRQ_CRC_ERROR);
+}
 
+int RADIO_getRxDone() {
+	return (RADIO_readIrqStatus() & SX126X_IRQ_RX_DONE);
+}
+
+uint8_t RADIO_getRxPayloadSize() {
+	sx126x_rx_buffer_status_t sx126x_rx_buffer_status_d;
+	sx126x_get_rx_buffer_status(0, &sx126x_rx_buffer_status_d);
+	return sx126x_rx_buffer_status_d.pld_len_in_bytes;
+}
+
+void RADIO_getRxPayload(uint8_t *buffer) {
+	sx126x_rx_buffer_status_t sx126x_rx_buffer_status_d;
+	sx126x_get_rx_buffer_status(0, &sx126x_rx_buffer_status_d);
+	sx126x_read_buffer(0, sx126x_rx_buffer_status_d.buffer_start_pointer, buffer, sx126x_rx_buffer_status_d.pld_len_in_bytes);
+}
+
+int RADIO_setBufferBaseAddress(uint8_t tx, uint8_t rx) {
+	return sx126x_set_buffer_base_address(0, tx, rx);
+}
+
+uint8_t RADIO_getRandInt(int n) {
+	uint32_t result;
+	sx126x_get_random_numbers(0, &result, n);
+	return (int)result;
+}

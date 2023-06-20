@@ -5,6 +5,6 @@ typedef enum FlightState {
 	STARTUP = 0,
 	WAIT_FOR_FIX = 1,
 	OPERATION = 5
-};
+}FlightState;
 
 #endif
