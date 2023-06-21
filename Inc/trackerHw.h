@@ -21,5 +21,6 @@ void HW_StopTimer3();
 uint32_t HW_getTimer3();
 void HW_resetTimer3();
 uint8_t HW_readDIO1();
+uint8_t HW_readJMP();
 
 #endif

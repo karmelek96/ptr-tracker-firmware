@@ -5,3 +5,4 @@ build/
 .settings/
 .launch/
 .metadata/
+.cproject

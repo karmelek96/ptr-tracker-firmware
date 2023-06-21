@@ -21,6 +21,8 @@ void KPLORA_send_data_lora() {
 	HW_writeLED(1);
 	RADIO_sendPacketLoRa(&KPLORA_selfTelemetryPacket, sizeof(DataPackageRF_t), 500);
 	HW_writeLED(0);
+	RADIO_clearIrqStatus();
+	HW_DelayMs(5);
 }
 
 void KPLORA_fillRelayBuffer(DataPackageRF_t newData, DataPackageRF_t* buffer) {
