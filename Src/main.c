@@ -46,6 +46,10 @@ uint8_t getSwitchPosition() {
 void setupTracker(uint8_t params) {
 	channel = params & 0b11;
 	A_flag = params & 0b100;
+
+	if(HW_readJMP()) {
+		txPower = TRACKER_TXPOWER_HIGH;
+	}
 }
 
 void blink_GPS_startup() {
@@ -70,19 +74,19 @@ int main(void)
 	RADIO_init();
 	switch(channel) {
 	case 0:
-		RADIO_modeLORA(TRACKER_FREQUENCY_0, TRACKER_TXPOWER_LOW);
+		RADIO_modeLORA(TRACKER_FREQUENCY_0, txPower);
 		break;
 
 	case 1:
-		RADIO_modeLORA(TRACKER_FREQUENCY_1, TRACKER_TXPOWER_LOW);
+		RADIO_modeLORA(TRACKER_FREQUENCY_1, txPower);
 		break;
 
 	case 2:
-		RADIO_modeLORA(TRACKER_FREQUENCY_2, TRACKER_TXPOWER_LOW);
+		RADIO_modeLORA(TRACKER_FREQUENCY_2, txPower);
 		break;
 
 	case 3:
-		RADIO_modeLORA(TRACKER_FREQUENCY_3, TRACKER_TXPOWER_LOW);
+		RADIO_modeLORA(TRACKER_FREQUENCY_3, txPower);
 		break;
 	}
     __disable_irq();
@@ -101,9 +105,12 @@ int main(void)
 		KPLORA_pack_data_standard(state, vbat, GPS_lat, GPS_lon, GPS_alt, GPS_fix, GPS_sat_count);
 		KPLORA_listenBeforeTalk();
 		KPLORA_send_data_lora();
-		KPLORA_listenForPackets();
 		if(A_flag) {
+			KPLORA_listenForPackets();
 			KPLORA_transmitRelayBuffer();
+		}
+		else {
+			HW_DelayMs(TRACKER_TRANSMISSION_SPACING);
 		}
 	}
 }
