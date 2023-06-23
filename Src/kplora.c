@@ -66,9 +66,7 @@ int KPLORA_listenBeforeTalk() {
 		int flag = 1;
 		int i;
 		for(i=0;i<10;i++) {
-			RADIO_setRxSingle();
-			HW_DelayMs(5);
-			if(RADIO_get_rssi(0) > -90) {
+			if((RADIO_get_CAD()) || (RADIO_get_rssi() > -90)) {
 				flag = 0;
 				break;
 			}

@@ -163,17 +163,39 @@ int RADIO_setStandby() {
 	return 0;
 }
 
-int16_t RADIO_get_rssi(const void* context) {
+int16_t RADIO_get_rssi() {
+	RADIO_setRxSingle();
+	HW_DelayMs(5);
     sx126x_status_t status = SX126X_STATUS_ERROR;
     int16_t rssi_in_dbm = 0;
 
     while (1) {
-        status = sx126x_get_rssi_inst(context, &rssi_in_dbm);
+        status = sx126x_get_rssi_inst(0, &rssi_in_dbm);
         if (status == SX126X_STATUS_OK) {
             return rssi_in_dbm;
         }
     }
-    HW_DelayMs(5);
+}
+
+uint8_t RADIO_get_CAD() {
+	sx126x_cad_params_t par;
+	par.cad_detect_min     = 10;
+	par.cad_detect_peak = 23;
+	par.cad_exit_mode = SX126X_CAD_ONLY;
+	par.cad_symb_nb     = SX126X_CAD_04_SYMB;
+	par.cad_timeout     = 0;
+	sx126x_set_cad_params(0, &par);
+	sx126x_set_cad(0);
+	HW_DelayMs(5);
+	while(!(RADIO_readIrqStatus() & SX126X_IRQ_CAD_DONE));
+	if(RADIO_readIrqStatus() & SX126X_IRQ_CAD_DETECTED) {
+		//RADIO_clearIrqStatus();
+		//HW_DelayMs(5);
+		return 1;
+	}
+	//RADIO_clearIrqStatus();
+	//HW_DelayMs(5);
+	return 0;
 }
 
 int RADIO_getCRC() {
