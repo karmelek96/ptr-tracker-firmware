@@ -6,11 +6,14 @@ DataPackageRF_t KPLORA_relayBuffer[KPLORA_RELAYBUFFER_SIZE];
 DataPackageRF_t KPLORA_receivedPacket;
 KPLORA_ProtocolTier KPLORA_protocolTier;
 int KPLORA_LBTCounter;
+uint16_t KPLORA_packetCounter = 0;
 
 void KPLORA_pack_data_standard(int _state, uint8_t _vbat, uint32_t _lat, uint32_t _lon, uint32_t _alt, uint8_t _fix, uint8_t _sats) {
 	KPLORA_selfTelemetryPacket.state = _state;
 	KPLORA_selfTelemetryPacket.vbat_10 = _vbat;
 	KPLORA_selfTelemetryPacket.packet_id = KPLORA_PACKET_ID_FULL; //We specify what type of frame we're sending, in this case the big 48 byte struct
+	KPLORA_selfTelemetryPacket.id = TRACKER_ID;
+	KPLORA_selfTelemetryPacket.packet_no = KPLORA_packetCounter++;
 	KPLORA_selfTelemetryPacket.lat = _lat;
 	KPLORA_selfTelemetryPacket.lon = _lon;
 	KPLORA_selfTelemetryPacket.alti_gps = _alt * 1000; //To mm

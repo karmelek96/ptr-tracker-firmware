@@ -1,6 +1,8 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
+#define TRACKER_ID 1//Unique device identifier
+
 #define TRACKER_FREQUENCY_0 434250000UL //Hz
 #define TRACKER_FREQUENCY_1 433550000UL //Hz
 #define TRACKER_FREQUENCY_2 433550000UL //Hz
