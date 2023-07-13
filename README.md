@@ -15,3 +15,9 @@ docker build -t tracker_compiler .
 docker run --rm -it -v $(pwd):/usr/local/src/tracker_firmware tracker_compiler
 ```
 6. The firmware will be in the `build` directory
+
+# Uploading on windows using openocd and stlink-v2
+7. Run openocd:
+```
+openocd_windows/bin/openocd.exe -s openocd_windows/share/openocd/scripts -f interface/stlink.cfg -f target/stm32g0x.cfg -c "program build/PTR-tracker-C.hex verify reset exit"
+```
