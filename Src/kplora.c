@@ -64,7 +64,6 @@ void KPLORA_listenForPackets() {
 int KPLORA_listenBeforeTalk() {
 	HW_resetTimer3();
 	while(HW_getTimer3() < KPLORA_LBT1_TIMEOUT) { //If the interference doesn't stop after 5s, transmit anyway
-		HW_DelayMs(KPLORA_MINIMUM_WAIT);
 		HW_DelayMs((uint8_t)(RADIO_getRandInt(1)));
 		int flag = 1;
 		int i;
