@@ -1,4 +1,5 @@
-### PTR Tracker firmware
+### MOVED
+https://github.com/PTR-projects/PTR_tracker_firmware
 
 ## Building the firmware
 # Building using Docker
